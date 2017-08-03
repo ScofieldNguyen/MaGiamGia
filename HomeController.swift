@@ -43,7 +43,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func setupEdgeSwipeGesture() {
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+        edgePan.edges = .left
         
+        view.addGestureRecognizer(edgePan)
+    }
+    
+    func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .began || recognizer.state == .changed {
+            sourceSlider.show()
+//            let translation = recognizer.translation(in: self.view)
+//            if sourceSlider.collectionView.center.x <
+//            sourceSlider.collectionView.center = CGPoint(x: sourceSlider.collectionView.center.x + translation.x, y: sourceSlider.collectionView.center.y)
+//            recognizer.setTranslation(CGPoint.zero, in: self.view)
+        }
     }
     
     func setupNavigationBarItem() {

@@ -176,6 +176,9 @@ class SourceSlider: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             window.addSubview(collectionView)
             collectionView.backgroundColor = UIColor.white
             collectionView.frame = CGRect(x: -(collectionViewWidth), y: 0, width: collectionViewWidth, height: window.frame.height)
+            let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleDismiss))
+            swipeLeftRecognizer.direction = .left
+            collectionView.addGestureRecognizer(swipeLeftRecognizer)
             
         }
     }
@@ -188,6 +191,7 @@ class SourceSlider: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         }) { (completed) in
             // Do something here...
         }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
