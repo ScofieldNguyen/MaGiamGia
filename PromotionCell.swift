@@ -40,23 +40,26 @@ class PromotionCell: UICollectionViewCell {
         return label
     }()
     
-    let titleView: UITextView = {
-        let label = UITextView()
+    let titleView: UILabel = {
+        let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 11)
-        label.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
+//        label.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.isSelectable = false
-        label.isScrollEnabled = false
+//        label.isScrollEnabled = false
+//        label.isEditable = false
         return label
     }()
     
-    let subtitleView: UITextView = {
-        let label = UITextView()
+    let subtitleView: UILabel = {
+        let label = UILabel()
         label.textColor = UIColor(colorLiteralRed: 78/255, green: 71/255, blue: 71/255, alpha: 0.5)
-        label.font = label.font?.withSize(10)
-        label.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
+        label.font = UIFont.boldSystemFont(ofSize: 10)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+//        label.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.isSelectable = false
+//        label.isEditable = false
+//        label.isSelectable = false
         return label
     }()
     

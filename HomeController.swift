@@ -10,7 +10,10 @@ import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
+    let interactor = Interacter()
     var promotions: [Promotion]?
+    
+    var modalController: ModalViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +61,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //            recognizer.setTranslation(CGPoint.zero, in: self.view)
         }
     }
+
     
     func setupNavigationBarItem() {
         let moreButtonImage = UIImage(named: "ic_dehaze_white")?.withRenderingMode(.alwaysOriginal)
@@ -129,6 +133,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return UIEdgeInsetsMake(15, 0, 15, 0)
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if modalController == nil {
+            modalController = ModalViewController()
+            modalController?.transitioningDelegate = self
+            modalController?.interactor = self.interactor
+        }
+        self.present(modalController!, animated: true, completion: nil)
+//        navigationController?.pushViewController(modalController!, animated: true)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -136,4 +150,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
 
 
+}
+
+extension HomeController: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissAnimator()
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
 }

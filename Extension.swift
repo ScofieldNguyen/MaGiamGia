@@ -36,3 +36,34 @@ extension UIView {
         self.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
 }
+
+let imageCache = NSCache<NSString, UIImage>()
+
+class CustomImageView: UIImageView {
+    var imageURLString: String?
+    func loadImageFromURLString(urlString: String) {
+        self.imageURLString = urlString
+        
+        if let img = imageCache.object(forKey: NSString(string: urlString)) {
+            self.image = img
+            return
+        }
+        
+        let url = URL(string: urlString)!
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            if urlString == self.imageURLString {
+                DispatchQueue.main.async {
+                    let loadedImage = UIImage(data: data!)
+                    imageCache.setObject(loadedImage!, forKey: NSString(string: urlString))
+                    self.image = loadedImage
+                }
+            }
+            
+            }.resume()
+    }
+}

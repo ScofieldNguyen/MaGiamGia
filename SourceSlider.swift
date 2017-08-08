@@ -164,7 +164,7 @@ class SourceSlider: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     func setupView() {
         if let window = UIApplication.shared.keyWindow {
             // Setup blackBackgroundView
-            blackBackgroundView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+            blackBackgroundView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackBackgroundView.frame = window.frame
             // Hide blackBackgroundView by default
             blackBackgroundView.alpha = 0
