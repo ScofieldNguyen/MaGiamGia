@@ -15,4 +15,5 @@ class Promotion: NSObject {
     var siteName: String?
     var thumbnailImage: String?
     var content: String?
+    var link: String?
 }

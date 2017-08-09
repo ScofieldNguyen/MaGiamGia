@@ -11,6 +11,16 @@ import UIKit
 class ModalViewController: UIViewController {
     
     var interactor: Interacter? = nil
+    var promotion: Promotion? {
+        didSet {
+            titleLabel.text = promotion?.title
+            contentLabel.text = promotion?.content
+            imageView.loadImageFromURLString(urlString: promotion!.thumbnailImage!)
+            expiredDay2.text = promotion?.experationDate
+        }
+    }
+    
+    var homeController: HomeController?
     
     override func viewDidLoad() {
         
@@ -94,7 +104,7 @@ class ModalViewController: UIViewController {
     }()
     
     func handleShareButton(sender: UIButton) {
-        let promoLink = NSURL(string: "http://www.bookin.vn/he-tha-ga-khong-lo-ve-gia-dat-ve-bay-ngay-tang-lien-tay-500k")
+        let promoLink = NSURL(string: (promotion?.link)!)
         let activityController = UIActivityViewController(activityItems: [promoLink!], applicationActivities: nil)
         self.present(activityController, animated: true, completion: nil)
     }
@@ -141,7 +151,10 @@ class ModalViewController: UIViewController {
         let actionSheet = UIAlertController(title: "Bạn muốn mở bằng", message: nil, preferredStyle: .actionSheet)
         
         let cancel = UIAlertAction(title: "Hủy", style: .cancel, handler: nil)
-        let browser = UIAlertAction(title: "Trình duyệt", style: .default, handler: nil)
+        let browser = UIAlertAction(title: "Trình duyệt", style: .default) { (action) in
+            self.homeController?.showWebView(url: (self.promotion?.link)!)
+            self.dismiss(animated: true, completion: nil)
+        }
         let app = UIAlertAction(title: "App", style: .default, handler: nil)
         actionSheet.addAction(cancel)
         actionSheet.addAction(browser)

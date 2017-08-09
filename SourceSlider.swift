@@ -84,6 +84,7 @@ class SourceSlider: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     
     let titleCellID = "titleCellID"
     let sourceCellID = "sourceCellID"
+    var homeController: HomeController?
     
     lazy var statusBarHeight: CGFloat = {
         return UIApplication.shared.statusBarFrame.height
@@ -154,6 +155,15 @@ class SourceSlider: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             return CGSize(width: collectionView.frame.width, height: 62)
         }else{
             return CGSize(width: collectionView.frame.width, height: 100)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if !isTitle[indexPath.row] {
+            print("selected")
+            let sourceName = cellsItem[indexPath.row]
+            homeController?.changeSource(source: sourceName)
+            handleDismiss()
         }
     }
     

@@ -17,7 +17,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadPromotions()
+        loadPromotions(source: "tiki")
         // Do any additional setup after loading the view, typically from a nib.
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(PromotionCell.self, forCellWithReuseIdentifier: "Cell")
@@ -32,6 +32,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     lazy var sourceSlider: SourceSlider = {
         let sl = SourceSlider()
+        sl.homeController = self
         return sl
     }()
     
@@ -83,8 +84,23 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
     }
     
-    func loadPromotions() {
-        if let path = Bundle.main.path(forResource: "promoJson", ofType: "json") {
+    func showWebView(url: String) {
+        let webViewController = UIViewController()
+        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        webView.loadRequest(URLRequest(url: URL(string: url)!))
+        webViewController.view.addSubview(webView)
+        //            self.present(webViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func changeSource(source: String) {
+        loadPromotions(source: source)
+        let titleLabel = self.navigationItem.titleView as! UILabel
+        titleLabel.text = source.capitalized
+    }
+    
+    func loadPromotions(source: String) {
+        if let path = Bundle.main.path(forResource: source, ofType: "json") {
             let url = URL(fileURLWithPath: path)
             do {
                 let data = try Data(contentsOf: url, options:
@@ -99,6 +115,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     promo.siteName = dictionary["siteName"] as? String
                     promo.thumbnailImage = dictionary["thumbnailImage"] as? String
                     promo.content = dictionary["content"] as? String
+                    promo.link = dictionary["link"] as? String
                     
                     promotions?.append(promo)
                 }
@@ -138,8 +155,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             modalController = ModalViewController()
             modalController?.transitioningDelegate = self
             modalController?.interactor = self.interactor
+            modalController?.homeController = self
         }
+        modalController?.promotion = promotions?[indexPath.row]
         self.present(modalController!, animated: true, completion: nil)
+//        navigationController?.pushViewController(modalController!, animated: true)
 //        navigationController?.pushViewController(modalController!, animated: true)
     }
     
