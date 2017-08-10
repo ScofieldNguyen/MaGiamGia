@@ -19,7 +19,7 @@ extension DismissAnimator: UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard
-            let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
+            let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? ModalViewController,
             let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
         else {
             return
@@ -36,6 +36,7 @@ extension DismissAnimator: UIViewControllerAnimatedTransitioning {
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             fromVC.view.frame = finalFrame
+            fromVC.blackView.alpha = 0
             toVC.view.alpha = 1
         }) { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)

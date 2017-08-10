@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ModalViewController: UIViewController {
     
@@ -31,6 +32,19 @@ class ModalViewController: UIViewController {
         
         setupViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        blackView.alpha = 1
+    }
+    
+    let blackView: UIView = {
+        let bv = UIView()
+        bv.translatesAutoresizingMaskIntoConstraints = false
+        bv.backgroundColor = UIColor(colorLiteralRed: 84/255, green: 171/255, blue: 210/255, alpha: 1)
+//        bv.backgroundColor = UIColor.black
+        return bv
+    }()
     
     let titleLabel: UILabel = {
         let tl = UILabel()
@@ -152,8 +166,11 @@ class ModalViewController: UIViewController {
         
         let cancel = UIAlertAction(title: "Hủy", style: .cancel, handler: nil)
         let browser = UIAlertAction(title: "Trình duyệt", style: .default) { (action) in
-            self.homeController?.showWebView(url: (self.promotion?.link)!)
-            self.dismiss(animated: true, completion: nil)
+//            self.homeController?.showWebView(url: (self.promotion?.link)!)
+            let url = URL(string: (self.promotion?.link)!)!
+            let sv = SFSafariViewController(url: url)
+            self.present(sv, animated: true, completion: nil)
+//            self.dismiss(animated: true, completion: nil)
         }
         let app = UIAlertAction(title: "App", style: .default, handler: nil)
         actionSheet.addAction(cancel)
@@ -163,6 +180,7 @@ class ModalViewController: UIViewController {
     }
     
     func setupViews() {
+        view.addSubview(blackView)
         view.addSubview(titleLabel)
         view.addSubview(expiredDay1)
         view.addSubview(expiredDay2)
@@ -173,8 +191,14 @@ class ModalViewController: UIViewController {
         view.addSubview(shareButton)
         view.addSubview(loveButton)
         view.addSubview(goButton)
+        // BlueView
+        blackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        blackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        blackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        let statusHeight = UIApplication.shared.statusBarFrame.height
+        blackView.heightAnchor.constraint(equalToConstant: statusHeight).isActive = true
         // TitleLabel
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: blackView.bottomAnchor, constant: 50).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
         // expiredDay

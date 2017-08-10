@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
@@ -85,12 +86,13 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func showWebView(url: String) {
-        let webViewController = UIViewController()
-        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        webView.loadRequest(URLRequest(url: URL(string: url)!))
-        webViewController.view.addSubview(webView)
-        //            self.present(webViewController, animated: true, completion: nil)
-        navigationController?.pushViewController(webViewController, animated: true)
+//        let webViewController = UIViewController()
+//        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+//        print(url)
+//        webView.loadRequest(URLRequest(url: URL(string: url)!))
+//        webViewController.view.addSubview(webView)
+//        //            self.present(webViewController, animated: true, completion: nil)
+//        navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func changeSource(source: String) {
